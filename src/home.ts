@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if(!usuarioLogado){
         window.alert("Necessário realizar o login")
-        window.location.href = 'http://127.0.0.1:5501/index.html' 
+        window.location.href = 'http://127.0.0.1:5500/index.html' 
     } 
 
     let listaUsuarios =  JSON.parse(localStorage.getItem('usuarios') || '[]')
