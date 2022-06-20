@@ -119,7 +119,7 @@ function logar(usuarioLogado: any){
 
    sessionStorage.setItem('usuarioLogado', inputEmailLogin.value)
 
-   window.location.href = './public/home.html'
+   window.location.href = 'home.html'
 
 
 
