@@ -1,4 +1,4 @@
-let i:number = 1
+let i:number = 0
 /* INPUTS */
 let inputDescricao = document.getElementById('input-descricao') as HTMLInputElement
 let inputDetalhamento = document.getElementById('input-detalhamento') as HTMLInputElement
@@ -26,6 +26,10 @@ btnSalvarRecado.addEventListener('click', (e) => {
     salvarRecado()
 })
 
+
+
+document.addEventListener('DOMContentLoaded', carregarRecados)
+
 /* INTERFACE */
 interface Recado {
     codigo: number,
@@ -45,7 +49,7 @@ function salvarRecado(){
     } 
 
     let novoRecado: Recado = {
-        codigo: i++,
+        codigo: i+=1,
         descricao: inputDescricao.value,
         detalhamento: inputDetalhamento.value
     }
@@ -87,18 +91,74 @@ function salvarNaTabela(recado: Recado){
                             <td>${recado.descricao}</td>
                             <td>${recado.detalhamento}</td>
                             <td>
-                                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalEditar">
+                                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalEditar" id="botaoEditar">
                                     <i class="bi bi-pencil-square"></i>
                                 </button>
-                                <button class=" btn btn-danger"data-bs-toggle="modal" data-bs-target="#modalApagar">
+                                <button class=" btn btn-danger"data-bs-toggle="modal" data-bs-target="#modalApagar" id="botaoApagar">
                                     <i class="bi bi-trash3"></i>
                                 </button>
                             </td>
                       </tr>
                         `
+    let botaoEditar = document.getElementById('botaoEditar') as HTMLButtonElement
+    let botaoApagar = document.getElementById('botaoApagar') as HTMLButtonElement
 
+    botaoEditar.addEventListener('click', () => {
+        prepararEdicao(recado)
+    })
+
+    botaoApagar.addEventListener('click', () => {
+        apagarRecado(recado.codigo)
+    })
 }
 
 function carregarRecados(){
+    let listaRecados = buscarRecadosNoStorage()
     
+    for(let recado of listaRecados){
+        salvarNaTabela(recado)
+    }
 }
+
+function prepararEdicao(recado: Recado){
+
+    btnEditarRecado.addEventListener('click', () => {
+        let recadoAtualizado:Recado = {
+            codigo: recado.codigo,
+            descricao: inputEditarDescricao.value,
+            detalhamento: inputEditarDetalhamento.value
+        } 
+        
+        atualizarRecado(recadoAtualizado)
+    })
+    
+function atualizarRecado(recado: Recado){
+    let recados = buscarRecadosNoStorage()
+
+    let indiceRecado = recados.findIndex((registro: Recado) => registro.codigo === recado.codigo)
+
+    recados[indiceRecado] = recado
+    salvarNoStorage(recados)
+    modalEditarRecado.hide()
+    window.location.reload()
+   }
+}
+
+function apagarRecado(codigo: number){
+    btnApagarRecado.addEventListener('click', () => {
+        let listaRecados = buscarRecadosNoStorage()
+        let indiceRecado = listaRecados.findIndex((registro: { codigo: number }) => registro.codigo == codigo)
+
+        listaRecados.splice(indiceRecado, 1)
+        salvarNoStorage(listaRecados)
+        modalApagarRecado.hide()
+        window.location.reload();
+    })
+}
+
+
+   
+
+
+
+    
