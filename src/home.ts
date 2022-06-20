@@ -13,6 +13,8 @@ let btnApagarRecado = document.getElementById('btn-apagar') as HTMLButtonElement
 let modalEditarRecado = new bootstrap.Modal('#modalEditar')
 let modalApagarRecado = new bootstrap.Modal('#modalApagar')
 
+/* SESSION E LOCAL STORAGE */
+let usuarioLogado = sessionStorage.getItem('usuarioLogado');
 
 /* EVENTOS */
 btnSalvarRecado.addEventListener('click', (e) => {
@@ -30,7 +32,13 @@ interface Recado {
 /* FUNÇÕES */
 function salvarRecado(){
 
-    let listaRecados: Recado[] = []
+    let listaRecados: Recado[] = buscarRecadosNoStorage()
+
+    if(inputDescricao.value === '' || inputDetalhamento.value === ''){
+        window.alert("É necessário o preenchimento do campo")
+        inputDescricao.focus()
+        return
+    } 
 
     let novoRecado: Recado = {
         codigo: '1',
@@ -40,13 +48,33 @@ function salvarRecado(){
 
     listaRecados.push(novoRecado)
     salvarNoStorage(listaRecados)
-    console.log(listaRecados)
-
+    limpar()
+    salvarNaTabela(novoRecado)
+    
 }
 
 function salvarNoStorage(recados: Recado[] = []){
+    let usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
 
-   let listaUsuarios: Array<Usuario> = JSON.parse(localStorage.getItem('usuarios') || '[]')
-   let checagem
+    let indiceUsuarioLogado = usuarios.findIndex((usuario: any) => usuario.email === usuarioLogado);
+
+    usuarios[indiceUsuarioLogado].recados = recados;
+    localStorage.setItem('usuarios', JSON.stringify(usuarios));
+}
+
+function buscarRecadosNoStorage(){
+    let usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
+
+    let indiceUsuarioLogado = usuarios.findIndex((usuario: any) => usuario.email === usuarioLogado);
+
+    return usuarios[indiceUsuarioLogado].recados
+}
+
+function limpar(){
+    inputDescricao.value = ''
+    inputDetalhamento.value = ''
+}
+
+function salvarNaTabela(recado: Recado){
 
 }

@@ -11,6 +11,8 @@ let btnApagarRecado = document.getElementById('btn-apagar');
 /* MODAIS */
 let modalEditarRecado = new bootstrap.Modal('#modalEditar');
 let modalApagarRecado = new bootstrap.Modal('#modalApagar');
+/* SESSION E LOCAL STORAGE */
+let usuarioLogado = sessionStorage.getItem('usuarioLogado');
 /* EVENTOS */
 btnSalvarRecado.addEventListener('click', (e) => {
     e.preventDefault();
@@ -18,7 +20,12 @@ btnSalvarRecado.addEventListener('click', (e) => {
 });
 /* FUNÇÕES */
 function salvarRecado() {
-    let listaRecados = [];
+    let listaRecados = buscarRecadosNoStorage();
+    if (inputDescricao.value === '' || inputDetalhamento.value === '') {
+        window.alert("É necessário o preenchimento do campo");
+        inputDescricao.focus();
+        return;
+    }
     let novoRecado = {
         codigo: '1',
         descricao: inputDescricao.value,
@@ -26,15 +33,20 @@ function salvarRecado() {
     };
     listaRecados.push(novoRecado);
     salvarNoStorage(listaRecados);
-    console.log(listaRecados);
+    limpar();
 }
 function salvarNoStorage(recados = []) {
-    // trazer lista de usuarios
-    let listaUsuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
-    console.log(listaUsuarios);
-    //  buscar na lista comparando o usuario que possuir o login igual ao login do usuarioLogado
-    //  e armazenar o indice desse usuario
-    //usuarios[indiceUsuarioLogado].recados = recados;
-    // mandaria salvar a lista de usuarios
-    // setItem - criar
+    let usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
+    let indiceUsuarioLogado = usuarios.findIndex((usuario) => usuario.email === usuarioLogado);
+    usuarios[indiceUsuarioLogado].recados = recados;
+    localStorage.setItem('usuarios', JSON.stringify(usuarios));
+}
+function buscarRecadosNoStorage() {
+    let usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
+    let indiceUsuarioLogado = usuarios.findIndex((usuario) => usuario.email === usuarioLogado);
+    return usuarios[indiceUsuarioLogado].recados;
+}
+function limpar() {
+    inputDescricao.value = '';
+    inputDetalhamento.value = '';
 }
