@@ -1,3 +1,4 @@
+let i:number = 1
 /* INPUTS */
 let inputDescricao = document.getElementById('input-descricao') as HTMLInputElement
 let inputDetalhamento = document.getElementById('input-detalhamento') as HTMLInputElement
@@ -16,6 +17,9 @@ let modalApagarRecado = new bootstrap.Modal('#modalApagar')
 /* SESSION E LOCAL STORAGE */
 let usuarioLogado = sessionStorage.getItem('usuarioLogado');
 
+/* TABELA */
+const tabela = document.getElementById('tbody-tabela') as HTMLTableRowElement
+
 /* EVENTOS */
 btnSalvarRecado.addEventListener('click', (e) => {
     e.preventDefault()
@@ -24,7 +28,7 @@ btnSalvarRecado.addEventListener('click', (e) => {
 
 /* INTERFACE */
 interface Recado {
-    codigo: string,
+    codigo: number,
     descricao: string,
     detalhamento: string
 }
@@ -41,7 +45,7 @@ function salvarRecado(){
     } 
 
     let novoRecado: Recado = {
-        codigo: '1',
+        codigo: i++,
         descricao: inputDescricao.value,
         detalhamento: inputDetalhamento.value
     }
@@ -76,5 +80,25 @@ function limpar(){
 }
 
 function salvarNaTabela(recado: Recado){
+    tabela.innerHTML += 
+                        `
+                        <tr id="${recado.codigo}">
+                            <td scope="row">${recado.codigo}</th>
+                            <td>${recado.descricao}</td>
+                            <td>${recado.detalhamento}</td>
+                            <td>
+                                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalEditar">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                                <button class=" btn btn-danger"data-bs-toggle="modal" data-bs-target="#modalApagar">
+                                    <i class="bi bi-trash3"></i>
+                                </button>
+                            </td>
+                      </tr>
+                        `
 
+}
+
+function carregarRecados(){
+    
 }
