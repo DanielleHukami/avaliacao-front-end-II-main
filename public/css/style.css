@@ -16,7 +16,7 @@ body{
     background-color: #212529;
     box-sizing: border-box;
     border-radius: 15px;
-    animation: teste 5s ease infinite;
+    animation: color-card1 5s ease infinite;
 }
 
 .colorCard2{
@@ -25,10 +25,10 @@ body{
     background: #0D6EFD;
     box-sizing: border-box;
     border-radius: 15px;
-    animation: teste2 5s ease infinite;
+    animation: color-card2 5s ease infinite;
 }
 
-@keyframes teste{
+@keyframes color-card1{
     0%{
         background-color: #1A1A40;
     }
@@ -42,7 +42,7 @@ body{
     }
 }
 
-@keyframes teste2 {
+@keyframes color-card2 {
     0%{
         background-color: #0D6EFD;
     }

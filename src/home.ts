@@ -9,6 +9,7 @@ let inputEditarDetalhamento = document.getElementById('input-editar-detalhamento
 let btnSalvarRecado = document.getElementById('btn-salvar-recado') as HTMLButtonElement
 let btnEditarRecado = document.getElementById('btn-atualizar') as HTMLButtonElement
 let btnApagarRecado = document.getElementById('btn-apagar') as HTMLButtonElement
+let btnSair = document.getElementById('btn-sair') as HTMLButtonElement
 
 /* MODAIS */
 let modalEditarRecado = new bootstrap.Modal('#modalEditar')
@@ -26,9 +27,21 @@ btnSalvarRecado.addEventListener('click', (e) => {
     salvarRecado()
 })
 
+btnSair.addEventListener('click', () =>{
+    window.location.href = 'index.html'
+    sessionStorage.removeItem('usuarioLogado')
+})
 
 
-document.addEventListener('DOMContentLoaded', carregarRecados)
+document.addEventListener('DOMContentLoaded', () =>{
+    if (!usuarioLogado) {
+        window.location.href = 'index.html'
+        window.alert("É necesário eftuar o login")
+        return
+    }
+
+    carregarRecados()
+})
 
 /* INTERFACE */
 interface Recado {

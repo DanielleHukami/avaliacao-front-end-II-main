@@ -9,6 +9,7 @@ let inputEditarDetalhamento = document.getElementById('input-editar-detalhamento
 let btnSalvarRecado = document.getElementById('btn-salvar-recado');
 let btnEditarRecado = document.getElementById('btn-atualizar');
 let btnApagarRecado = document.getElementById('btn-apagar');
+let btnSair = document.getElementById('btn-sair');
 /* MODAIS */
 let modalEditarRecado = new bootstrap.Modal('#modalEditar');
 let modalApagarRecado = new bootstrap.Modal('#modalApagar');
@@ -21,7 +22,18 @@ btnSalvarRecado.addEventListener('click', (e) => {
     e.preventDefault();
     salvarRecado();
 });
-document.addEventListener('DOMContentLoaded', carregarRecados);
+btnSair.addEventListener('click', () => {
+    window.location.href = 'index.html';
+    sessionStorage.removeItem('usuarioLogado');
+});
+document.addEventListener('DOMContentLoaded', () => {
+    if (!usuarioLogado) {
+        window.location.href = 'index.html';
+        window.alert("É necesário eftuar o login");
+        return;
+    }
+    carregarRecados();
+});
 /* FUNÇÕES */
 function salvarRecado() {
     let listaRecados = buscarRecadosNoStorage();
